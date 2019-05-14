@@ -44,7 +44,7 @@ exclude: true
   - are interested in k3s cluster management
 
 ---
-### Preferred
+### Preferred Knowledge
 
 - The basic knowledge of:
 
@@ -87,8 +87,6 @@ class: header-margin
   - Half the memory
 
   - Single binary less than 40MB
-
-  - Only 512MB of RAM required to run
 ]
 
 .right-small[<center><img src="https://k3s.io/img/logo-square.png" width=100%></center>
@@ -112,6 +110,9 @@ class: header-margin
 
 .right-small[<center><img src="https://k3s.io/img/logo-square.png" width=100%></center>
 ]
+
+---
+### How To Pronounce k3s?
 
 ---
 ### Changes
@@ -154,8 +155,10 @@ class: header-margin
 $ k3s server &
 # Kubeconfig is written to /etc/rancher/k3s/k3s.yaml
 $ k3s kubectl get node
+NAME             STATUS     ROLES    AGE   VERSION
+k3s-server       Ready      <none>   30s   v1.14.1-k3s.4
 
-# Without running the agent
+# Run without running the agent
 $ k3s server --disable-agent
 ```
 ]
@@ -170,6 +173,14 @@ class: header-margin
 # /var/lib/rancher/k3s/server/node-token on the server
 $ k3s agent --server https://myserver:6443 \
   --token ${NODE_TOKEN}
+```
+
+```bash
+# Show nodes again
+$ k3s kubectl get node
+NAME             STATUS     ROLES    AGE   VERSION
+k3s-agent        Ready      <none>   1h    v1.14.1-k3s.4
+k3s-server       Ready      <none>   1h    v1.14.1-k3s.4
 ```
 ]
 
@@ -188,7 +199,24 @@ class: center, middle
 ### Configuration
 
 ---
-### Advance Preparation
+class: header-margin
+### Raspberry Pi Configuration
+
+<center><img src="raspi-led.jpg" width=90%></center>
+
+---
+### Raspberry Pi Configuration
+
+- Raspberry Pi 3 B+
+
+- Breadboard
+
+- LED
+
+- Resistor
+
+---
+### Required Preparation
 
 - Create VM on Microsoft Azure
 
@@ -196,8 +224,17 @@ class: center, middle
 
 - Join k3s node on Raspberry Pi
 
+.zoom2[
+```bash
+$ k3s kubectl get node
+NAME         STATUS   ROLES    AGE   VERSION
+k3s-server   Ready    <none>   19d   v1.14.1-k3s.4
+raspi-1      Ready    <none>   16d   v1.14.1-k3s.4
+```
+]
+
 ---
-### Blink LED Program(sample.py)
+### Sample Program(sample.py)
 
 ```python
 import RPi.GPIO as GPIO
@@ -229,7 +266,7 @@ CMD [ "python", "./sample.py" ]
 ```
 
 ---
-### Docker Image 
+### Create Docker Image 
 
 ```bash
 # [NAME] is an account name of Docker Hub
@@ -274,10 +311,19 @@ spec:
 ---
 ### Deploy on Raspberry Pi
 
+.zoom2[
 ```bash
 $ k3s kubectl apply -f sample.yaml
+pod/sample created
+
+# The pod was deployed on Raspberry Pi
 $ k3s kubectl get po -o wide
+NAME     READY   STATUS    RESTARTS   AGE   IP          
+NODE      NOMINATED NODE   READINESS GATES
+sample   1/1     Running   0          48s   10.42.0.6   
+raspi-1   <none>           <none>
 ```
+]
 
 ---
 ### Links
