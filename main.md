@@ -112,9 +112,6 @@ class: header-margin
 ]
 
 ---
-### How To Pronounce k3s?
-
----
 ### Changes
 
 .zoom1[
@@ -135,6 +132,13 @@ background-size: cover
 <center><img src="https://k3s.io/img/how-it-works.svg" width=100%></center>
 
 ---
+### k3s Pronounce "Kubes"...?
+
+<u><https://github.com/rancher/k3s/issues/55></u>
+
+<center><img src="k3s-pronounce.png" width=100%></center>
+
+---
 class: center, middle
 # Get started
 
@@ -146,13 +150,30 @@ class: center, middle
 <center><img src="download.png" width=100%></center>
 
 ---
+### Download Binary
+
+.zoom2[
+- DOWNLOADPATH:
+https://github.com/rancher/k3s/releases/download/v0.5.0/k3s
+]
+
+```bash
+$ wget [DOWNLOADPATH]
+$ ls
+k3s
+
+$ chmod +x k3s
+$ sudo mv k3s /usr/bin/
+```
+
+---
 class: header-margin
 ### Run Server
 
 .zoom2[
 ```bash
 # Run in the background
-$ k3s server &
+$ sudo k3s server &
 # Kubeconfig is written to /etc/rancher/k3s/k3s.yaml
 $ k3s kubectl get node
 NAME             STATUS     ROLES    AGE   VERSION
@@ -171,12 +192,13 @@ class: header-margin
 ```bash
 # NODE_TOKEN comes from
 # /var/lib/rancher/k3s/server/node-token on the server
-$ k3s agent --server https://myserver:6443 \
+$ sudo k3s agent --server https://myserver:6443 \
   --token ${NODE_TOKEN}
 ```
 
+- Show nodes on server:
+
 ```bash
-# Show nodes again
 $ k3s kubectl get node
 NAME             STATUS     ROLES    AGE   VERSION
 k3s-agent        Ready      <none>   1h    v1.14.1-k3s.4
@@ -196,7 +218,10 @@ class: center, middle
 <center><img src="raspi.png" width=100%></center>
 
 ---
+class: header-margin
 ### Configuration
+
+<center><img src="config.png" width=100%></center>
 
 ---
 class: header-margin
@@ -284,7 +309,6 @@ $ docker push [NAME]/raspi-sample
 ---
 ### Manifest(sample.yaml)
 
-.zoom1[
 ```yaml
 apiVersion: v1
 kind: Pod
@@ -296,17 +320,9 @@ spec:
       image: [NAME]/raspi-sample
       securityContext:
         privileged: true
-      volumeMounts:
-        - mountPath: /sys/class/gpio
-          name: gpio
   nodeSelector:
       kubernetes.io/arch: arm
-  volumes:
-  - name: gpio
-    hostPath:
-      path: /sys/class/gpio
 ```
-]
 
 ---
 ### Deploy on Raspberry Pi
@@ -324,6 +340,8 @@ sample   1/1     Running   0          48s   10.42.0.6
 raspi-1   <none>           <none>
 ```
 ]
+
+- The LED blinks!!
 
 ---
 ### Links
