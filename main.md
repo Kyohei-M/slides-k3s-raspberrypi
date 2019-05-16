@@ -240,6 +240,8 @@ class: header-margin
 
 - Resistor
 
+- Jump wire
+
 ---
 ### Required Preparation
 
