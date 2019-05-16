@@ -14,7 +14,6 @@ background-size: cover
 ]
 
 ---
-exclude: true
 ### whoami
 
 .left-small[
@@ -344,6 +343,10 @@ raspi-1   <none>           <none>
 ]
 
 - The LED blinks!!
+
+---
+class: center, middle
+# Demo
 
 ---
 ### Links
